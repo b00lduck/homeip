@@ -37,11 +37,14 @@ func main() {
             }
             if string(body) == secret {
                 log.Warn("Correct secret received, updating")
-                current_ip, _, err = net.SplitHostPort(r.RemoteAddr)
-                if err != nil {
-                    log.Error(err)
-                    w.WriteHeader(500)
-                    return
+                current_ip = r.Header.Get("X-FORWARDED-FOR")
+                if current_ip == "" {
+                    current_ip, _, err = net.SplitHostPort(r.RemoteAddr)
+                    if err != nil {
+                        log.Error(err)
+                        w.WriteHeader(500)
+                        return
+                    }
                 }
                 fmt.Fprint(w, current_ip)
                 return
