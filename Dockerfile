@@ -1,9 +1,4 @@
 FROM scratch
-
-ENTRYPOINT ["homeip"]
-
-ENV PORT=8080
-
-ADD homeip homeip
-
+ENTRYPOINT ["/homeip"]
+ADD homeip /
 USER 999:999
